@@ -1,34 +1,44 @@
 # Canopy × LCZ × Heat Hazard — Java, Indonesia
 
-Notebooks relating projected heat hazard (annual 95th-percentile daily Tmax, `Tmax_annual_p95`) to urban form (Local Climate Zones, LCZ) and tree canopy height across Java Island, plus a minimal Nature-based Solutions (NbS) canopy workflow for Bali.
+## Question
+How does projected extreme heat (annual 95th-percentile daily maximum temperature, `Tmax_annual_p95`) vary across Java's urban form (Local Climate Zones, LCZ) and tree canopy, and how much can canopy cover offset urban heat?
 
-## Notebooks
-| Notebook | Purpose |
+## Data
+Raw data is **not** in this repo (too large). Put it in a local `data/` folder; paths are set in each notebook's config cell.
+
+| Dataset | Source |
 |---|---|
-| `Java_Tmax95_LCZ_Canopy.ipynb` | Tmax95 hazard (baseline vs future) × LCZ × canopy on a 100 m grid |
-| `Java_Tmax95_LCZ_Canopy_ERA5.ipynb` | Same, with ERA5-Land daily Tmax as baseline and CORDEX Tmax95 for baseline/future |
-| `analysis_main.ipynb` | Monthly tas/tasmin/tasmax from SINGV-RCM (ACCESS-CM2) historical and SSP projections, ERA5-Land comparison |
-| `Bali_NbS_Minimal.ipynb` | Canopy Height Map + WorldCover + LST → NbS score for Bali |
-| `Untitled-1.ipynb` | Scratch: ERA5-Land monthly means download (CDS API) |
-| `convert_tiff_to_nc.py` | GeoTIFF → NetCDF via `gdal_translate` |
+| LCZ map, 100 m | WUDAPT / LCZ-Global |
+| Canopy height, ~1 m | Meta / WRI global canopy height map |
+| ERA5-Land (2 m temperature, daily/monthly) | Copernicus Climate Data Store (needs a CDS account) |
+| Regional climate model | CORDEX-SEA, SINGV-RCM driven by ACCESS-CM2: historical, SSP1-2.6, SSP2-4.5, SSP5-8.5 (monthly tas, tasmin, tasmax) |
+| Java boundary | `Java_Coastline/` (included) |
 
-`Java_Coastline/` holds the Java boundary shapefile used for clipping.
+## Method
+1. Align LCZ, canopy and climate layers to a common 100 m grid over Java.
+2. Derive built-up LCZ classes and canopy fraction per cell.
+3. Compute an LCZ thermal modifier from surface-temperature contrasts and add it to the coarse Tmax95 hazard (baseline vs future) to get a 100 m field.
+4. Summarise per LCZ class, and regress Tmax95 on canopy fraction (overall and per LCZ).
 
-## Data (not in this repo)
-Large inputs are git-ignored. Place them locally (paths are set in each notebook's config cell; some are absolute paths from the author's machine and need adjusting):
-- **LCZ** — WUDAPT / LCZ-Global, 100 m (`LCZ_Subset_Java.tif`)
-- **Canopy height** — Meta/WRI global canopy height map, ~1 m (`Canopy_Height_Java-*.tif`)
-- **ERA5-Land** — Copernicus Climate Data Store (requires a CDS account and `~/.cdsapirc`)
-- **Regional climate projections** — CORDEX-SEA SINGV-RCM driven by ACCESS-CM2 (historical, SSP scenarios), monthly tas/tasmin/tasmax
+## Notebooks (run in order)
+| # | Notebook | Purpose |
+|---|---|---|
+| 01 | `notebooks/01_download_era5land_inspect_cordex.ipynb` | Download ERA5-Land via CDS API; inspect CORDEX files |
+| 02 | `notebooks/02_cordex_lcz_urban_natural_contrast.ipynb` | Historical and SSP projections; urban vs natural temperature contrast by LCZ group |
+| 03 | `notebooks/03_tmax95_lcz_canopy.ipynb` | Tmax95 × LCZ × canopy at 100 m |
+| 04 | `notebooks/04_tmax95_lcz_canopy_era5_cordex.ipynb` | Same, with ERA5-Land baseline and CORDEX Tmax95 |
 
-## Run
+`extras/bali_nbs_minimal.ipynb` is a side workflow (Nature-based Solutions score for Bali). `scripts/convert_tiff_to_nc.py` converts the LCZ GeoTIFF to NetCDF (needs GDAL).
+
+## Key findings
+Not yet written up: the committed notebooks have no saved outputs. Add 2–3 numbers (per-LCZ Tmax95 change, canopy slope) after re-running.
+
+## How to run
 ```bash
 pip install -r requirements.txt
-jupyter lab
+# put the datasets above in ./data, then
+jupyter lab notebooks/
 ```
-GDAL is needed only for `convert_tiff_to_nc.py`.
 
 ## Reference
 Hendrawan et al. (2024), *Future exposure of rainfall and temperature extremes to the most populous cities in Indonesia*, Int. J. Climatol.
-
-*Work in progress; results have not been re-validated.*
