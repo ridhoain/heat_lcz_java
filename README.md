@@ -1,4 +1,30 @@
-# Canopy × LCZ × Heat Hazard — Java, Indonesia
+# Future Temperature Changes in Java's Peri-Urban Landscapes
+
+Code behind the research poster *Future Temperature Changes in Java's Peri-Urban Landscapes* (YES Conference, Theme 3: Climate Action and Adaptation), Ainur Ridho, World Resources Institute Indonesia.
+
+## Poster summary
+Peri-urban areas in Java are highly vulnerable to rising temperatures but remain understudied. Using Local Climate Zones (LCZs), the study maps historical and projected daily mean surface air temperature (SAT) and extreme warm days (TG90p, days per year above the historical 90th percentile).
+
+**Research questions**
+1. How does temperature vary historically among LCZs?
+2. How will near-future (2030–2050) and distant-future (2080–2100) temperatures shift?
+3. How will the frequency of extremely warm days (TG90p) change in peri-urban LCZs?
+
+**Poster data and method**
+- LCZ map (~100 m), SRTM elevation (30 m), SA-OBS observations (~25 km, 1995–2014), SINGV-RCM driven by EC-Earth3 (~8 km; SSP1-2.6, SSP2-4.5, SSP5-8.5).
+- Regrid everything to ~8 km; split LCZs into lowland (<300 m) and highland (>300 m); bias-correct with quantile mapping against observations and transfer the correction to the projections.
+- Compute daily mean SAT per lowland LCZ, then TG90p for LCZ 6 (open lowrise) and LCZ 9 (sparsely built) lowland, the populated peri-urban classes.
+
+**Key findings (from the poster)**
+- Urban LCZs (28–30 °C) and industrial zones (28 °C) have the highest daily mean SAT; peri-urban and rural areas are ~27 °C.
+- Warming reaches ~2 °C by 2080–2100, largest in lowland agricultural and peri-urban areas (Tangerang, Bekasi–Cirebon corridor, Blora–Bojonegoro, Parahyangan, Bromo–Semeru).
+- TG90p in peri-urban lowland LCZs rises from ~30 days/year (near future) to ~90 days/year (distant future), with minor differences across SSPs.
+
+> **Note on the code:** the notebooks in this repo are the working analysis and do not all match the poster's setup one-to-one. They use ERA5-Land and CORDEX-SEA SINGV-RCM driven by ACCESS-CM2 (not SA-OBS and EC-Earth3), and compute Tmax95 and canopy relationships rather than TG90p with quantile mapping. Treat the poster as the reference for the published results.
+
+---
+
+# Repository contents
 
 ## Question
 How does projected extreme heat (annual 95th-percentile daily maximum temperature, `Tmax_annual_p95`) vary across Java's urban form (Local Climate Zones, LCZ) and tree canopy, and how much can canopy cover offset urban heat?
