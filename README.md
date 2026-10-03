@@ -26,7 +26,7 @@ Peri-urban areas in Java are highly vulnerable to rising temperatures but remain
 
 # Repository contents
 
-## Question
+## Working analysis: question
 How does projected extreme heat (annual 95th-percentile daily maximum temperature, `Tmax_annual_p95`) vary across Java's urban form (Local Climate Zones, LCZ) and tree canopy, and how much can canopy cover offset urban heat?
 
 ## Data
