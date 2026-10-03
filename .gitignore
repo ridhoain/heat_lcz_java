@@ -16,3 +16,6 @@ t2m_java_hist_proj/
 t2m_java_historical_access/
 data/
 outputs/
+
+# but keep the poster and result figures
+!figures/*.pdf
